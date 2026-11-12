@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: jetstore
+      POSTGRES_USER: jetstore_admin
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jetstore_admin -d jetstore"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jetstore
+      SPRING_DATASOURCE_USERNAME: jetstore_admin
+      SPRING_DATASOURCE_PASSWORD: 1234
+      MERCADOPAGO_ACCESS_TOKEN: ${MERCADOPAGO_ACCESS_TOKEN:-}
+      MERCADOPAGO_NOTIFICATION_URL: ${MERCADOPAGO_NOTIFICATION_URL:-http://localhost:8080/pago/webhook}
+      MERCADOPAGO_BACK_SUCCESS: ${MERCADOPAGO_BACK_SUCCESS:-http://localhost:3000/checkout/success}
+      MERCADOPAGO_BACK_FAILURE: ${MERCADOPAGO_BACK_FAILURE:-http://localhost:3000/checkout}
+      MERCADOPAGO_BACK_PENDING: ${MERCADOPAGO_BACK_PENDING:-http://localhost:3000/checkout}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./Frontend/frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
