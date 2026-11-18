@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "cd Frontend/frontend && npm run dev",
+    "dev": "cd Frontend && npm run dev",
     "dev:full": "echo 'Starting full stack...' && echo '1. Start Docker: docker-compose up -d' && echo '2. Start Frontend: npm run dev' && echo 'Frontend: http://localhost:3000' && echo 'Backend: http://localhost:8080' && echo 'PostgreSQL: localhost:5432'",
-    "build": "cd Frontend/frontend && npm run build",
-    "start": "cd Frontend/frontend && npm start",
-    "lint": "cd Frontend/frontend && npm run lint",
-    "install:all": "cd Frontend/frontend && npm install",
+    "build": "cd Frontend && npm run build",
+    "start": "cd Frontend && npm start",
+    "lint": "cd Frontend && npm run lint",
+    "install:all": "cd Frontend && npm install",
     "db:up": "docker-compose up -d postgres backend",
     "db:down": "docker-compose down",
     "db:reset": "docker-compose down -v && docker-compose up -d postgres"

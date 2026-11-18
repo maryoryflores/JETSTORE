@@ -74,12 +74,12 @@ Ver `backend/README.md` para endpoints y documentación completa.
 ### 3. Frontend
 
 ```bash
-cd Frontend/frontend
+cd Frontend
 npm install
 npm run dev
 ```
 
-Abrir **http://localhost:3000**.
+Abrir **http://localhost:3000**. Si otro servicio (por ejemplo Grafana) ya ocupa el puerto 3000, Next.js mostrará en consola el puerto alterno, normalmente **http://localhost:3001**.
 
 ## Usuarios de prueba
 
